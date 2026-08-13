@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS // Next-Gen Gaming Store, GenZ Videos & Community</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#09070f',
+                        surface: '#130f24',
+                        surfaceLight: '#1d1736',
+                        crimson: {
+                            DEFAULT: '#dc2626',
+                            glow: '#ff2a55',
+                            dark: '#991b1b',
+                        },
+                        purpleGlow: {
+                            DEFAULT: '#9333ea',
+                            accent: '#a855f7',
+                            dark: '#581c87',
+                        },
+                        cyanGlow: {
+                            DEFAULT: '#06b6d4',
+                            accent: '#22d3ee',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'crimson-glow': '0 0 25px -5px rgba(220, 38, 38, 0.5)',
+                        'purple-glow': '0 0 25px -5px rgba(147, 51, 234, 0.5)',
+                        'cyan-glow': '0 0 25px -5px rgba(6, 182, 212, 0.5)',
+                        'neon-card': '0 4px 20px -2px rgba(147, 51, 234, 0.25), 0 0 10px rgba(220, 38, 38, 0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #09070f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a224a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #dc2626;
+        }
+
+        .glass-panel {
+            background: rgba(19, 15, 36, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-nav {
+            background: rgba(9, 7, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+        }
+
+        .gradient-text-crimson {
+            background: linear-gradient(135deg, #ff2a55 0%, #dc2626 50%, #9333ea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-text-genz {
+            background: linear-gradient(135deg, #22d3ee 0%, #a855f7 50%, #ff2a55 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-bg {
+            background: radial-gradient(circle at 20% 20%, rgba(220, 38, 38, 0.18) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.2) 0%, transparent 45%),
+                        #09070f;
+        }
+
+        .card-hover-effect {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover-effect:hover {
+            transform: translateY(-6px);
+            border-color: rgba(220, 38, 38, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(147, 51, 234, 0.3);
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-obsidian text-slate-100 font-sans min-h-screen flex flex-col selection:bg-crimson selection:text-white hero-bg">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <header class="sticky top-0 z-40 w-full glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-crimson to-purpleGlow flex items-center justify-center shadow-crimson-glow group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-gamepad text-white text-xl"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-display font-black text-2xl tracking-wider text-white">NEXUS<span class="text-crimson">.</span></span>
+                    <span class="text-[9px] tracking-widest text-purpleGlow-accent font-semibold uppercase -mt-1">Gaming Zone</span>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+                <button onclick="navigateTo('home')" id="nav-home" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all text-slate-300 hover:text-white hover:bg-surfaceLight/50">
+                    <i class="fa-solid fa-house mr-1.5 text-xs"></i>Home
+                </button>
+                <button onclick="navigateTo('gamezone')" id="nav-gamezone" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all text-slate-300 hover:text-white hover:bg-surfaceLight/50">
+                    <i class="fa-solid fa-store mr-1.5 text-xs"></i>GameZone
+                </button>
+                <button onclick="navigateTo('community')" id="nav-community" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all text-slate-300 hover:text-white hover:bg-surfaceLight/50">
+                    <i class="fa-solid fa-comments mr-1.5 text-xs text-purpleGlow-accent"></i>Community Hub
+                </button>
+                <button onclick="navigateTo('genz')" id="nav-genz" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-bold transition-all text-white bg-gradient-to-r from-cyan-500/20 via-purpleGlow/20 to-crimson/20 border border-cyanGlow-accent/40 hover:border-cyanGlow-accent shadow-cyan-glow animate-pulse-glow flex items-center gap-1.5">
+                    <i class="fa-solid fa-play text-xs text-cyanGlow-accent"></i>
+                    <span class="gradient-text-genz font-extrabold">GenZ</span>
+                    <span class="bg-cyanGlow text-obsidian text-[9px] font-black px-1.5 py-0.5 rounded-full">REELS</span>
+                </button>
+                <button onclick="navigateTo('about')" id="nav-about" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all text-slate-300 hover:text-white hover:bg-surfaceLight/50">
+                    <i class="fa-solid fa-circle-info mr-1.5 text-xs"></i>About
+                </button>
+                <button onclick="navigateTo('profile')" id="nav-profile" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all text-slate-300 hover:text-white hover:bg-surfaceLight/50">
+                    <i class="fa-solid fa-user-astronaut mr-1.5 text-xs"></i>Profile
+                </button>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <!-- Cart Trigger Button -->
+                <button onclick="toggleCartDrawer()" class="relative p-2.5 rounded-xl bg-surfaceLight/60 hover:bg-surfaceLight border border-white/10 hover:border-crimson/50 text-slate-200 transition-all">
+                    <i class="fa-solid fa-cart-shopping text-lg"></i>
+                    <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-crimson text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-lg border border-obsidian scale-0 transition-transform">0</span>
+                </button>
+
+                <!-- Auth Buttons -->
+                <div id="auth-nav-container" class="hidden sm:flex items-center gap-2">
+                    <button onclick="navigateTo('signin')" id="nav-signin" class="px-3 py-2 text-sm font-medium text-slate-200 hover:text-white transition-colors">
+                        Sign In
+                    </button>
+                    <button onclick="navigateTo('signup')" id="nav-signup" class="px-4 py-2 text-sm font-medium rounded-xl bg-gradient-to-r from-crimson to-purpleGlow hover:from-crimson-glow hover:to-purpleGlow-accent text-white shadow-crimson-glow transition-all duration-200 hover:scale-[1.02]">
+                        Sign Up
+                    </button>
+                </div>
+
+                <!-- User Profile Badge -->
+                <div id="user-nav-badge" class="hidden items-center gap-3 cursor-pointer pl-2 border-l border-white/10" onclick="navigateTo('profile')">
+                    <img id="nav-user-avatar" src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=100&auto=format&fit=crop&q=80" alt="Avatar" class="w-9 h-9 rounded-xl object-cover ring-2 ring-purpleGlow">
+                    <div class="hidden lg:flex flex-col">
+                        <span id="nav-user-tag" class="text-xs font-semibold text-slate-200 -mb-0.5">Gamer</span>
+                        <span id="nav-user-xp" class="text-[10px] font-bold text-amber-400"><i class="fa-solid fa-bolt text-[9px] mr-0.5"></i>1,450 XP</span>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Toggle -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg text-slate-300 hover:bg-surfaceLight">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-purpleGlow/20 px-4 py-4 space-y-2">
+            <button onclick="navigateTo('home'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-slate-200 hover:bg-surfaceLight font-medium">Home</button>
+            <button onclick="navigateTo('gamezone'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-slate-200 hover:bg-surfaceLight font-medium">GameZone (Store)</button>
+            <button onclick="navigateTo('community'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-purpleGlow-accent hover:bg-surfaceLight font-semibold"><i class="fa-solid fa-comments mr-2"></i>Community Chat</button>
+            <button onclick="navigateTo('genz'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg bg-gradient-to-r from-cyan-500/20 to-purpleGlow/20 border border-cyanGlow/40 text-cyanGlow-accent font-bold flex items-center justify-between">
+                <span><i class="fa-solid fa-circle-play mr-2"></i>GenZ Short Videos</span>
+                <span class="text-[10px] bg-cyanGlow text-obsidian px-2 py-0.5 rounded-full uppercase font-black">TikTok for Gamers</span>
+            </button>
+            <button onclick="navigateTo('about'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-slate-200 hover:bg-surfaceLight font-medium">About Us</button>
+            <button onclick="navigateTo('profile'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-slate-200 hover:bg-surfaceLight font-medium">Profile / Dashboard</button>
+            <div id="mobile-auth-container" class="pt-3 border-t border-white/10 flex flex-col gap-2">
+                <button onclick="navigateTo('signin'); toggleMobileMenu();" class="w-full py-2.5 rounded-xl border border-white/10 text-center font-medium">Sign In</button>
+                <button onclick="navigateTo('signup'); toggleMobileMenu();" class="w-full py-2.5 rounded-xl bg-crimson text-center font-medium text-white shadow-crimson-glow">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        
+        <!-- PAGE 1: HOME -->
+        <section id="page-home" class="page-view space-y-16 pb-16">
+            <!-- Hero Banner -->
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 lg:pt-12">
+                <div class="relative rounded-3xl overflow-hidden glass-panel border border-purpleGlow/30 p-8 sm:p-12 lg:p-16 min-h-[500px] flex flex-col justify-center">
+                    <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-purpleGlow/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-20 -top-20 w-96 h-96 bg-crimson/20 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="relative z-10 max-w-2xl space-y-6">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-crimson/10 border border-crimson/30 text-crimson-glow text-xs font-bold uppercase tracking-wider">
+                            <span class="w-2 h-2 rounded-full bg-crimson animate-ping"></span> Use Nexus XP for Discounts
+                        </div>
+                        <h1 class="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-white leading-tight">
+                            EQUIP YOUR <span class="gradient-text-crimson">BATTLESTATION</span>
+                        </h1>
+                        <p class="text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
+                            Get instant access to top AAA game keys, join gamer chat channels, share short gameplay reels on <span class="text-cyanGlow-accent font-bold">GenZ</span>, and redeem <span class="text-amber-400 font-bold">Nexus XP</span> for instant store discounts!
+                        </p>
+                        <div class="flex flex-wrap items-center gap-4 pt-2">
+                            <button onclick="navigateTo('gamezone')" class="px-8 py-4 rounded-xl bg-gradient-to-r from-crimson to-purpleGlow hover:from-crimson-glow hover:to-purpleGlow-accent text-white font-bold text-base shadow-crimson-glow hover:scale-105 transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-gamepad"></i> Explore GameZone
+                            </button>
+                            <button onclick="navigateTo('genz')" class="px-6 py-4 rounded-xl bg-gradient-to-r from-cyan-500/20 via-purpleGlow/30 to-crimson/20 border border-cyanGlow/50 hover:border-cyanGlow text-white font-bold text-base transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-play text-cyanGlow-accent"></i> Watch GenZ Clips
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-end mb-8">
+                    <div>
+                        <h2 class="font-display text-2xl font-bold text-white">PLATFORM HIGHLIGHTS</h2>
+                        <p class="text-slate-400 text-sm">Shop hardware, chat with squads, or watch clip reels</p>
+                    </div>
+                    <button onclick="navigateTo('gamezone')" class="text-xs font-bold text-purpleGlow-accent hover:text-white transition-colors flex items-center gap-1 uppercase tracking-wider">
+                        View Store <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div onclick="filterGamezone('games')" class="glass-panel rounded-2xl p-6 card-hover-effect cursor-pointer group border border-white/5">
+                        <div class="w-14 h-14 rounded-2xl bg-crimson/10 border border-crimson/30 flex items-center justify-center text-crimson-glow text-2xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-compact-disc"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-white group-hover:text-crimson-glow transition-colors">AAA Digital Keys</h3>
+                        <p class="text-xs text-slate-400 mt-1">Instant key delivery for PC, PS5, Xbox & Switch.</p>
+                    </div>
+
+                    <div onclick="navigateTo('community')" class="glass-panel rounded-2xl p-6 card-hover-effect cursor-pointer group border border-purpleGlow/30">
+                        <div class="w-14 h-14 rounded-2xl bg-purpleGlow/20 border border-purpleGlow/40 flex items-center justify-center text-purpleGlow-accent text-2xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-comments"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-white group-hover:text-purpleGlow-accent transition-colors">Gamer Community Hub</h3>
+                        <p class="text-xs text-slate-400 mt-1">Chat live with players, find squads & share game reviews.</p>
+                    </div>
+
+                    <div onclick="navigateTo('genz')" class="glass-panel rounded-2xl p-6 card-hover-effect cursor-pointer group border border-cyanGlow/30">
+                        <div class="w-14 h-14 rounded-2xl bg-cyanGlow/20 border border-cyanGlow/40 flex items-center justify-center text-cyanGlow-accent text-2xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-circle-play"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-white group-hover:text-cyanGlow-accent transition-colors">GenZ Video Feed</h3>
+                        <p class="text-xs text-slate-400 mt-1">TikTok-style gamer reels, clips, fails & clutch highlights.</p>
+                    </div>
+
+                    <div onclick="filterGamezone('gear')" class="glass-panel rounded-2xl p-6 card-hover-effect cursor-pointer group border border-white/5">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-white group-hover:text-amber-400 transition-colors">XP Discount Vault</h3>
+                        <p class="text-xs text-slate-400 mt-1">Earn XP on every action and convert XP directly into cash discounts!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Items -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-crimson uppercase tracking-widest">Featured Storefront</span>
+                        <h2 class="font-display text-3xl font-bold text-white">HOTTEST GEAR & GAMES</h2>
+                    </div>
+                    <button onclick="navigateTo('gamezone')" class="px-4 py-2 rounded-xl bg-surfaceLight border border-white/10 text-sm font-semibold hover:border-crimson transition-all">
+                        Explore Full Catalog
+                    </button>
+                </div>
+
+                <div id="home-featured-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: GAMEZONE (MARKETPLACE) -->
+        <section id="page-gamezone" class="page-view hidden space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-6">
+            <div class="glass-panel rounded-3xl p-8 border border-purpleGlow/30 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <span class="text-xs font-bold text-purpleGlow-accent uppercase tracking-widest">Official Storefront</span>
+                    <h1 class="font-display font-black text-3xl sm:text-4xl text-white mt-1">GAMEZONE MARKETPLACE</h1>
+                    <p class="text-slate-400 text-sm mt-1">Redeem your <span class="text-amber-400 font-bold">Nexus XP</span> at checkout for instant product discounts!</p>
+                </div>
+
+                <div class="flex items-center p-1.5 rounded-2xl bg-obsidian border border-white/10 self-start md:self-auto">
+                    <button onclick="setMarketplaceCategory('all')" id="tab-cat-all" class="cat-tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-gradient-to-r from-crimson to-purpleGlow text-white shadow-crimson-glow">
+                        All Items
+                    </button>
+                    <button onclick="setMarketplaceCategory('games')" id="tab-cat-games" class="cat-tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-gamepad mr-1.5"></i>Games
+                    </button>
+                    <button onclick="setMarketplaceCategory('gear')" id="tab-cat-gear" class="cat-tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-headset mr-1.5"></i>Game Gear
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters & Search -->
+            <div class="glass-panel rounded-2xl p-4 sm:p-6 border border-white/10 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div class="relative flex-grow max-w-md">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="store-search-input" onkeyup="handleSearchInput()" placeholder="Search Minecraft, Call of Duty, PS5, Mouse..." class="w-full bg-surfaceLight/80 border border-white/10 rounded-xl pl-11 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-crimson focus:ring-1 focus:ring-crimson transition-all">
+                </div>
+
+                <div id="subcategory-pills" class="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-none"></div>
+
+                <div class="flex items-center gap-2 shrink-0">
+                    <span class="text-xs text-slate-400 font-medium">Sort:</span>
+                    <select id="sort-select" onchange="applyFiltersAndSort()" class="bg-surfaceLight border border-white/10 rounded-xl px-3 py-2 text-xs font-semibold text-slate-200 focus:outline-none focus:border-purpleGlow">
+                        <option value="featured">Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Top Rated</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+                <p class="text-xs text-slate-400">Showing <span id="items-count-label" class="font-bold text-white">0</span> gaming items</p>
+                <button onclick="resetFilters()" class="text-xs text-crimson-glow hover:underline hidden" id="reset-filter-btn">
+                    <i class="fa-solid fa-rotate-left mr-1"></i>Reset filters
+                </button>
+            </div>
+
+            <div id="marketplace-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+        </section>
+
+        <!-- PAGE 3: COMMUNITY HUB (CHAT & DISCUSSION) -->
+        <section id="page-community" class="page-view hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-6">
+            <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-purpleGlow/30 flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purpleGlow/20 text-purpleGlow-accent text-xs font-bold uppercase mb-2">
+                        <i class="fa-solid fa-users text-xs"></i> Live Gamer Lounge
+                    </div>
+                    <h1 class="font-display font-black text-3xl sm:text-4xl text-white">NEXUS COMMUNITY HUB</h1>
+                    <p class="text-slate-400 text-sm mt-1">Connect with gamers worldwide, organize LFG squads, and earn <span class="text-amber-400 font-bold">+25 XP per message</span>!</p>
+                </div>
+                <div class="flex items-center gap-3 bg-surface/80 p-3 rounded-2xl border border-white/10 shrink-0">
+                    <div class="text-right">
+                        <p class="text-[10px] text-slate-400 uppercase font-semibold">Active Gamers Online</p>
+                        <p class="text-base font-bold text-emerald-400 flex items-center justify-end gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> 1,842 Online
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 min-h-[600px]">
+                <!-- Chat Channels Sidebar -->
+                <div class="glass-panel rounded-2xl p-4 border border-white/10 space-y-4 lg:col-span-1">
+                    <h3 class="font-display font-bold text-xs text-slate-400 uppercase tracking-wider px-2">Channels</h3>
+                    <div class="space-y-1">
+                        <button onclick="switchChatChannel('general')" id="channel-btn-general" class="channel-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all bg-purpleGlow text-white shadow-purple-glow">
+                            <span><i class="fa-solid fa-hashtag mr-2 text-purpleGlow-accent"></i>general-lounge</span>
+                            <span class="text-[10px] bg-obsidian/60 px-2 py-0.5 rounded-full">Live</span>
+                        </button>
+                        <button onclick="switchChatChannel('lfg')" id="channel-btn-lfg" class="channel-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-surfaceLight transition-all">
+                            <span><i class="fa-solid fa-gamepad mr-2 text-crimson"></i>lfg-squad-up</span>
+                            <span class="text-[10px] text-slate-400">COD / MC</span>
+                        </button>
+                        <button onclick="switchChatChannel('hardware')" id="channel-btn-hardware" class="channel-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-surfaceLight transition-all">
+                            <span><i class="fa-solid fa-microchip mr-2 text-cyanGlow-accent"></i>setup-showcase</span>
+                            <span class="text-[10px] text-slate-400">Rig Talk</span>
+                        </button>
+                        <button onclick="switchChatChannel('reviews')" id="channel-btn-reviews" class="channel-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-surfaceLight transition-all">
+                            <span><i class="fa-solid fa-star mr-2 text-amber-400"></i>game-reviews</span>
+                            <span class="text-[10px] text-slate-400">Ratings</span>
+                        </button>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/10 space-y-3">
+                        <h4 class="font-display font-bold text-xs text-slate-400 uppercase tracking-wider px-2">Community XP Perk</h4>
+                        <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-slate-300 space-y-1">
+                            <p class="font-bold text-amber-400 flex items-center gap-1"><i class="fa-solid fa-bolt"></i> Active Chat Bonus</p>
+                            <p class="text-[11px] leading-relaxed">Earn 25 XP for every constructive message posted! Use XP for store discounts.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Messages Feed & Input -->
+                <div class="glass-panel rounded-2xl p-4 sm:p-6 border border-white/10 flex flex-col justify-between lg:col-span-3 min-h-[500px]">
+                    <div class="pb-3 border-b border-white/10 flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <h3 id="current-channel-title" class="font-display font-bold text-base text-white"># general-lounge</h3>
+                            <span class="text-xs text-slate-400">| Public Gaming Discussion</span>
+                        </div>
+                        <span class="text-[11px] text-amber-400 font-bold bg-amber-400/10 px-2.5 py-1 rounded-full border border-amber-400/20"><i class="fa-solid fa-coins mr-1"></i>Earn XP Active</span>
+                    </div>
+
+                    <!-- Chat Messages List -->
+                    <div id="chat-messages-container" class="flex-grow overflow-y-auto my-4 space-y-4 max-h-[420px] pr-2">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Message Input Form -->
+                    <form onsubmit="handleSendCommunityMessage(event)" class="pt-3 border-t border-white/10 flex gap-3">
+                        <input type="text" id="community-message-input" placeholder="Type a message to the community... (Earn +25 XP)" required class="flex-grow bg-surfaceLight border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-purpleGlow">
+                        <button type="submit" class="px-6 py-3 rounded-xl bg-gradient-to-r from-purpleGlow to-crimson hover:from-purpleGlow-accent hover:to-crimson-glow text-white font-bold text-sm shadow-purple-glow flex items-center gap-2 shrink-0">
+                            <span>Send</span> <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: GENZ SOCIAL VIDEO FEED (TIKTOK FOR GAMERS) -->
+        <section id="page-genz" class="page-view hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-6">
+            <!-- Header -->
+            <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-cyanGlow/40 flex flex-col md:flex-row items-center justify-between gap-6 mb-8 relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-72 h-72 bg-cyanGlow/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyanGlow/20 text-cyanGlow-accent text-xs font-extrabold uppercase mb-2 border border-cyanGlow/30">
+                        <i class="fa-solid fa-circle-play text-xs"></i> Short-Form Gamer Reels
+                    </div>
+                    <h1 class="font-display font-black text-3xl sm:text-5xl text-white">GENZ <span class="gradient-text-genz">REELS</span></h1>
+                    <p class="text-slate-300 text-sm mt-1 max-w-xl">
+                        The ultimate social media platform for gamers! Watch insane clutches, fails, speedruns, and gear reviews. Upload clips to earn <span class="text-amber-400 font-bold">+50 Nexus XP</span>!
+                    </p>
+                </div>
+                <div class="z-10 flex items-center gap-3">
+                    <button onclick="openPostVideoModal()" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-cyanGlow to-purpleGlow hover:from-cyanGlow-accent hover:to-purpleGlow-accent text-obsidian font-black text-sm shadow-cyan-glow transition-all hover:scale-105 flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle text-base"></i> Post Your Clip (+50 XP)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reels & Shorts Feed Container -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Video Cards populated by JS -->
+                <div id="genz-feed-container" class="contents"></div>
+            </div>
+        </section>
+
+        <!-- PAGE 5: ABOUT -->
+        <section id="page-about" class="page-view hidden space-y-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-6">
+            <div class="glass-panel rounded-3xl p-8 sm:p-12 border border-purpleGlow/30 text-center max-w-4xl mx-auto space-y-6">
+                <span class="px-4 py-1.5 rounded-full bg-purpleGlow/20 text-purpleGlow-accent text-xs font-bold uppercase tracking-wider">Our Platform</span>
+                <h1 class="font-display font-black text-3xl sm:text-5xl text-white">BUILT BY GAMERS, FOR GAMERS</h1>
+                <p class="text-slate-300 text-base leading-relaxed">
+                    NEXUS GameZone combines digital game activations, high-end PC & console gear, a live squad community lounge, and <span class="text-cyanGlow-accent font-bold">GenZ</span> short video reel sharing into one seamless dark portal.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-panel rounded-2xl p-8 border border-white/10 hover:border-crimson/40 transition-all text-center space-y-4">
+                    <div class="w-16 h-16 rounded-2xl bg-crimson/20 mx-auto flex items-center justify-center text-crimson text-3xl">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-white">100% Verified Digital Keys</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Direct activation codes for Call of Duty, Minecraft, Cyberpunk, EA FC, and more with instant delivery.</p>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-8 border border-white/10 hover:border-cyanGlow/40 transition-all text-center space-y-4">
+                    <div class="w-16 h-16 rounded-2xl bg-cyanGlow/20 mx-auto flex items-center justify-center text-cyanGlow-accent text-3xl">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-white">GenZ Short Video Social</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Share epic plays, vote on clip highlights, gain followers, and collect community XP bonuses.</p>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-8 border border-white/10 hover:border-amber-500/40 transition-all text-center space-y-4">
+                    <div class="w-16 h-16 rounded-2xl bg-amber-500/20 mx-auto flex items-center justify-center text-amber-400 text-3xl">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-white">Nexus XP Savings Protocol</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Earn XP on every purchase, post, and video upload. Redeem 100 XP for $1.00 OFF any store item!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 6: PROFILE / DASHBOARD -->
+        <section id="page-profile" class="page-view hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-6">
+            <div id="profile-logged-in" class="space-y-8 hidden">
+                <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-purpleGlow/30 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+                    <div class="flex flex-col sm:flex-row items-center gap-6 z-10">
+                        <div class="relative">
+                            <img id="dash-avatar" src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=150&auto=format&fit=crop&q=80" alt="Avatar" class="w-24 h-24 rounded-2xl object-cover ring-4 ring-crimson shadow-crimson-glow">
+                            <span class="absolute -bottom-2 -right-2 bg-purpleGlow text-white text-[10px] font-black px-2 py-0.5 rounded-full border-2 border-obsidian">LVL 42</span>
+                        </div>
+                        <div class="text-center sm:text-left space-y-1">
+                            <div class="flex items-center gap-3 justify-center sm:justify-start">
+                                <h2 id="dash-gamertag" class="font-display font-black text-2xl sm:text-3xl text-white">GhostReaper99</h2>
+                                <span class="px-2.5 py-0.5 rounded-full bg-crimson/20 border border-crimson/40 text-crimson-glow text-xs font-bold uppercase">Pro Tier</span>
+                            </div>
+                            <p id="dash-email" class="text-xs text-slate-400">gamer@nexuszone.io</p>
+                            <p class="text-xs text-purpleGlow-accent font-medium">Member since: August 2024</p>
+                        </div>
+                    </div>
+
+                    <!-- XP Balance Banner -->
+                    <div class="flex items-center gap-4 bg-surface/80 p-4 rounded-2xl border border-white/10 z-10 w-full md:w-auto justify-around">
+                        <div class="text-center px-4">
+                            <p class="text-xs text-slate-400 font-semibold uppercase">Nexus XP Balance</p>
+                            <p id="dash-points" class="font-display font-black text-2xl text-amber-400">1,450 XP</p>
+                            <p id="dash-points-value" class="text-[10px] text-emerald-400 font-bold">Worth $14.50 in Discounts</p>
+                        </div>
+                        <div class="h-10 w-px bg-white/10"></div>
+                        <div class="text-center px-4">
+                            <p class="text-xs text-slate-400 font-semibold uppercase">Games Owned</p>
+                            <p id="dash-owned-count" class="font-display font-black text-2xl text-purpleGlow-accent">2</p>
+                        </div>
+                        <button onclick="handleSignOut()" class="p-3 rounded-xl bg-crimson/20 text-crimson hover:bg-crimson hover:text-white transition-all text-xs font-bold" title="Sign Out">
+                            <i class="fa-solid fa-right-from-bracket text-base"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profile Dashboard Tabs -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="glass-panel rounded-2xl p-6 border border-white/10 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-display font-bold text-lg text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-key text-crimson"></i> Digital Key Vault
+                                </h3>
+                                <span class="text-xs text-slate-400">Instant Redeem</span>
+                            </div>
+                            <div id="digital-keys-list" class="space-y-3"></div>
+                        </div>
+
+                        <div class="glass-panel rounded-2xl p-6 border border-white/10 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-display font-bold text-lg text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-truck-fast text-purpleGlow-accent"></i> Order History
+                                </h3>
+                                <span class="text-xs text-slate-400">Gear Shipments</span>
+                            </div>
+                            <div id="order-history-list" class="space-y-3"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="glass-panel rounded-2xl p-6 border border-white/10 space-y-4">
+                            <h3 class="font-display font-bold text-lg text-white">Account Settings</h3>
+                            <form onsubmit="handleUpdateProfile(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Gamer Tag</label>
+                                    <input type="text" id="edit-gamertag" class="w-full bg-surfaceLight border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-crimson">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Primary Email</label>
+                                    <input type="email" id="edit-email" class="w-full bg-surfaceLight border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-crimson">
+                                </div>
+                                <button type="submit" class="w-full py-2.5 rounded-xl bg-purpleGlow hover:bg-purpleGlow-accent text-white font-semibold text-sm transition-all shadow-purple-glow">
+                                    Save Changes
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Nexus XP Info Card -->
+                        <div class="glass-panel rounded-2xl p-6 border border-amber-500/40 space-y-3 bg-gradient-to-b from-amber-500/10 to-transparent">
+                            <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
+                                <i class="fa-solid fa-coins"></i> How Nexus XP Works
+                            </div>
+                            <ul class="text-xs text-slate-300 space-y-2 list-disc pl-4">
+                                <li><strong>Purchases:</strong> Get 200 XP for every checkout order.</li>
+                                <li><strong>Community Chat:</strong> Get +25 XP per chat message.</li>
+                                <li><strong>GenZ Video Reels:</strong> Get +50 XP per video clip upload.</li>
+                                <li><strong>Redemption Rate:</strong> 100 XP = $1.00 OFF in shopping cart!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="profile-logged-out" class="glass-panel rounded-3xl p-12 text-center max-w-xl mx-auto border border-crimson/30 space-y-6 my-12">
+                <div class="w-20 h-20 rounded-full bg-crimson/20 mx-auto flex items-center justify-center text-crimson text-4xl shadow-crimson-glow">
+                    <i class="fa-solid fa-user-lock"></i>
+                </div>
+                <div class="space-y-2">
+                    <h2 class="font-display font-black text-2xl text-white">ACCESS RESTRICTED</h2>
+                    <p class="text-slate-400 text-sm">Sign in to view your Gamer Dashboard, manage keys, track orders, and redeem Nexus XP.</p>
+                </div>
+                <div class="flex items-center justify-center gap-4 pt-4">
+                    <button onclick="navigateTo('signin')" class="px-6 py-3 rounded-xl bg-surfaceLight border border-white/10 text-white font-semibold text-sm hover:border-purpleGlow">
+                        Sign In
+                    </button>
+                    <button onclick="navigateTo('signup')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-crimson to-purpleGlow text-white font-bold text-sm shadow-crimson-glow">
+                        Create Account
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 7: SIGN IN -->
+        <section id="page-signin" class="page-view hidden max-w-md mx-auto px-4 pb-16 pt-8">
+            <div class="glass-panel rounded-3xl p-8 border border-crimson/30 space-y-6 shadow-neon-card">
+                <div class="text-center space-y-2">
+                    <div class="w-12 h-12 rounded-2xl bg-crimson/20 mx-auto flex items-center justify-center text-crimson text-xl mb-2">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                    </div>
+                    <h2 class="font-display font-black text-2xl text-white">WELCOME BACK</h2>
+                    <p class="text-xs text-slate-400">Sign in to your NEXUS account</p>
+                </div>
+
+                <form onsubmit="handleSignInSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Email / Gamer Tag</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                            <input type="email" id="signin-email" required placeholder="gamer@nexuszone.io" class="w-full bg-surfaceLight border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-crimson focus:ring-1 focus:ring-crimson">
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label class="block text-xs font-semibold text-slate-300">Password</label>
+                            <a href="javascript:void(0)" onclick="showToast('Password reset link sent to your email', 'info')" class="text-[11px] text-purpleGlow-accent hover:underline">Forgot?</a>
+                        </div>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                            <input type="password" id="signin-password" required placeholder="••••••••" class="w-full bg-surfaceLight border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-crimson focus:ring-1 focus:ring-crimson">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-crimson to-purpleGlow hover:from-crimson-glow hover:to-purpleGlow-accent text-white font-bold text-sm shadow-crimson-glow transition-all">
+                        Sign In To GameZone
+                    </button>
+                </form>
+
+                <div class="text-center pt-2 border-t border-white/10">
+                    <p class="text-xs text-slate-400">Don't have an account yet? 
+                        <button onclick="navigateTo('signup')" class="text-crimson-glow font-bold hover:underline">Sign Up Now</button>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 8: SIGN UP -->
+        <section id="page-signup" class="page-view hidden max-w-md mx-auto px-4 pb-16 pt-8">
+            <div class="glass-panel rounded-3xl p-8 border border-purpleGlow/30 space-y-6 shadow-neon-card">
+                <div class="text-center space-y-2">
+                    <div class="w-12 h-12 rounded-2xl bg-purpleGlow/20 mx-auto flex items-center justify-center text-purpleGlow-accent text-xl mb-2">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <h2 class="font-display font-black text-2xl text-white">JOIN NEXUS ZONE</h2>
+                    <p class="text-xs text-slate-400">Create an account & get 200 free Nexus XP</p>
+                </div>
+
+                <form onsubmit="handleSignUpSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Choose Gamer Tag</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-gamepad absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                            <input type="text" id="signup-tag" required placeholder="e.g. CyberKnight" class="w-full bg-surfaceLight border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-purpleGlow">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Email Address</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                            <input type="email" id="signup-email" required placeholder="you@example.com" class="w-full bg-surfaceLight border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-purpleGlow">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Password</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                            <input type="password" id="signup-password" required placeholder="At least 6 characters" class="w-full bg-surfaceLight border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-purpleGlow">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-purpleGlow to-crimson hover:from-purpleGlow-accent hover:to-crimson-glow text-white font-bold text-sm shadow-purple-glow transition-all">
+                        Create Account & Get 200 XP ($2.00 Value)
+                    </button>
+                </form>
+
+                <div class="text-center pt-2 border-t border-white/10">
+                    <p class="text-xs text-slate-400">Already have an account? 
+                        <button onclick="navigateTo('signin')" class="text-purpleGlow-accent font-bold hover:underline">Sign In</button>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Shopping Cart Drawer -->
+    <div id="cart-drawer-overlay" onclick="toggleCartDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[440px] bg-obsidian border-l border-purpleGlow/30 z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+        <div class="p-6 border-b border-white/10 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-cart-shopping text-crimson text-xl"></i>
+                <h3 class="font-display font-bold text-lg text-white">Your Gaming Cart</h3>
+            </div>
+            <button onclick="toggleCartDrawer()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-surfaceLight">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <div id="cart-items-container" class="flex-grow overflow-y-auto p-6 space-y-4"></div>
+
+        <div class="p-6 border-t border-white/10 glass-panel space-y-4">
+            <!-- Nexus XP Redemption Section -->
+            <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-coins"></i> Redeem Nexus XP Balance
+                    </span>
+                    <span id="cart-xp-user-balance" class="text-xs font-mono font-bold text-white">1,450 XP</span>
+                </div>
+                <div class="flex items-center justify-between gap-2">
+                    <span class="text-[11px] text-slate-300">Convert XP into Cash Discount:</span>
+                    <button onclick="toggleXpDiscount()" id="xp-discount-btn" class="px-3 py-1 rounded-xl bg-amber-500 text-obsidian font-black text-xs hover:bg-amber-400 transition-all shadow-md">
+                        Redeem 500 XP (-$5.00)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Promo Code Input -->
+            <div class="flex gap-2">
+                <input type="text" id="promo-code-input" placeholder="Promo code (GAMER10)" class="flex-grow bg-surfaceLight border border-white/10 rounded-xl px-3 py-2 text-xs text-white uppercase focus:outline-none focus:border-crimson">
+                <button onclick="applyPromoCode()" class="px-4 py-2 bg-surfaceLight border border-white/10 hover:border-purpleGlow text-xs font-bold rounded-xl text-slate-200">Apply</button>
+            </div>
+
+            <!-- Total Calculations -->
+            <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between text-slate-400">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal" class="text-white font-medium">$0.00</span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                    <span>Promo Discount</span>
+                    <span id="cart-discount" class="text-crimson font-medium">-$0.00</span>
+                </div>
+                <div class="flex justify-between text-amber-400 font-semibold">
+                    <span>Nexus XP Discount</span>
+                    <span id="cart-xp-discount">-$0.00</span>
+                </div>
+                <div class="flex justify-between text-sm font-bold text-white pt-2 border-t border-white/10">
+                    <span>Total</span>
+                    <span id="cart-total" class="text-crimson-glow">$0.00</span>
+                </div>
+            </div>
+
+            <button onclick="openCheckoutModal()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-crimson to-purpleGlow hover:from-crimson-glow hover:to-purpleGlow-accent text-white font-bold text-sm shadow-crimson-glow transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-lock text-xs"></i> Proceed To Checkout
+            </button>
+        </div>
+    </aside>
+
+    <!-- GenZ Post Video Clip Modal -->
+    <div id="genz-post-modal-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-panel rounded-3xl border border-cyanGlow/50 max-w-lg w-full p-6 sm:p-8 relative space-y-6">
+            <button onclick="closePostVideoModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="space-y-1">
+                <span class="text-xs font-extrabold text-cyanGlow-accent uppercase tracking-widest"><i class="fa-solid fa-video mr-1"></i>GenZ Gaming Reels</span>
+                <h3 class="font-display font-black text-2xl text-white">POST A VIDEO CLIP</h3>
+                <p class="text-xs text-slate-400">Share your gameplay experience with the community and receive <strong>+50 Nexus XP</strong>!</p>
+            </div>
+
+            <form onsubmit="handleUploadGenzClip(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Video Title / Caption</label>
+                    <input type="text" id="post-title" required placeholder="Insane 1v4 Clutch in COD MW3!" class="w-full bg-surfaceLight border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-cyanGlow">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Game Tag</label>
+                    <input type="text" id="post-game" required placeholder="Call of Duty, Minecraft, Cyberpunk..." class="w-full bg-surfaceLight border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-cyanGlow">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Video Thumbnail / Clip URL</label>
+                    <input type="url" id="post-image" required placeholder="https://images.unsplash.com/..." value="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80" class="w-full bg-surfaceLight border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-cyanGlow">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Description / Experience Story</label>
+                    <textarea id="post-desc" rows="2" required placeholder="Tell us what happened in this gameplay clip..." class="w-full bg-surfaceLight border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-cyanGlow"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyanGlow to-purpleGlow text-obsidian font-black text-sm shadow-cyan-glow hover:scale-105 transition-all">
+                    Publish Clip & Claim +50 XP
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Quick View Modal -->
+    <div id="product-modal-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="product-modal-content" class="glass-panel rounded-3xl border border-purpleGlow/40 max-w-2xl w-full p-6 sm:p-8 relative transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-surfaceLight">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div id="product-modal-body" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-panel rounded-3xl border border-crimson/40 max-w-lg w-full p-6 sm:p-8 relative space-y-6">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="space-y-1">
+                <h3 class="font-display font-black text-2xl text-white">COMPLETE PURCHASE</h3>
+                <p class="text-xs text-slate-400">Simulated secure checkout. Digital keys & orders store into your profile.</p>
+            </div>
+
+            <form onsubmit="handleCheckoutSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Cardholder Name</label>
+                    <input type="text" required placeholder="Alex Gamer" class="w-full bg-surfaceLight border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-crimson">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Card Number</label>
+                    <input type="text" required placeholder="4242 •••• •••• 4242" class="w-full bg-surfaceLight border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-crimson">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Expiry Date</label>
+                        <input type="text" required placeholder="12/28" class="w-full bg-surfaceLight border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-crimson">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">CVC / CVV</label>
+                        <input type="text" required placeholder="888" class="w-full bg-surfaceLight border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-crimson">
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-crimson to-purpleGlow text-white font-bold text-sm shadow-crimson-glow">
+                        Pay <span id="checkout-pay-amount">$0.00</span> & Activate Order
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-auto glass-nav border-t border-purpleGlow/20 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Brand Info -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-crimson to-purpleGlow flex items-center justify-center">
+                            <i class="fa-solid fa-gamepad text-white text-sm"></i>
+                        </div>
+                        <span class="font-display font-black text-xl text-white">NEXUS<span class="text-crimson">.</span></span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        The ultimate dark marketplace for digital game activation keys, battle gear hardware, community chat, and short gaming video clips on <strong class="text-cyanGlow-accent">GenZ</strong>.
+                    </p>
+                </div>
+
+                <!-- Navigation Links -->
+                <div>
+                    <h4 class="font-display font-bold text-xs uppercase text-slate-200 tracking-wider mb-4">Quick Navigation</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><a href="javascript:void(0)" onclick="navigateTo('home')" class="hover:text-crimson-glow">Home</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('gamezone')" class="hover:text-crimson-glow">GameZone Marketplace</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('community')" class="hover:text-purpleGlow-accent font-semibold text-purpleGlow-accent"><i class="fa-solid fa-comments mr-1"></i>Community Chat Lounge</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('profile')" class="hover:text-crimson-glow">Gamer Profile & XP</a></li>
+                    </ul>
+                </div>
+
+                <!-- Prominent GenZ Social Media Section at Footer -->
+                <div class="p-4 rounded-2xl bg-gradient-to-br from-cyan-500/10 via-purpleGlow/10 to-transparent border border-cyanGlow/30 space-y-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg bg-cyanGlow text-obsidian flex items-center justify-center font-black text-xs">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                        <h4 class="font-display font-black text-sm text-white">GenZ Social Platform</h4>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Watch & share TikTok-style gaming reels, clutch plays, fails, and setup showcases!
+                    </p>
+                    <button onclick="navigateTo('genz')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyanGlow to-purpleGlow hover:from-cyanGlow-accent hover:to-purpleGlow-accent text-obsidian font-black text-xs shadow-cyan-glow transition-all flex items-center justify-center gap-1.5 uppercase">
+                        <i class="fa-solid fa-circle-play"></i> Open GenZ Video Feed
+                    </button>
+                </div>
+
+                <!-- Social Handles -->
+                <div class="space-y-3">
+                    <h4 class="font-display font-bold text-xs uppercase text-slate-200 tracking-wider">Connect & Follow</h4>
+                    <div class="flex items-center gap-3 text-slate-400">
+                        <a href="javascript:void(0)" class="w-8 h-8 rounded-lg bg-surfaceLight flex items-center justify-center hover:bg-cyanGlow hover:text-obsidian transition-all" title="GenZ Reels"><i class="fa-solid fa-play"></i></a>
+                        <a href="javascript:void(0)" class="w-8 h-8 rounded-lg bg-surfaceLight flex items-center justify-center hover:bg-crimson hover:text-white transition-all"><i class="fa-brands fa-discord"></i></a>
+                        <a href="javascript:void(0)" class="w-8 h-8 rounded-lg bg-surfaceLight flex items-center justify-center hover:bg-purpleGlow hover:text-white transition-all"><i class="fa-brands fa-twitch"></i></a>
+                        <a href="javascript:void(0)" class="w-8 h-8 rounded-lg bg-surfaceLight flex items-center justify-center hover:bg-crimson hover:text-white transition-all"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+                <p>© 2026 NEXUS GameZone & GenZ Media Inc. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="javascript:void(0)" onclick="navigateTo('genz')" class="hover:underline text-cyanGlow-accent font-semibold">GenZ Platform Terms</a>
+                    <a href="javascript:void(0)" class="hover:underline">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const PRODUCTS = [
+            {
+                id: 'g-minecraft',
+                title: 'Minecraft: Java & Bedrock Edition',
+                category: 'games',
+                subcategory: 'sandbox',
+                price: 29.99,
+                originalPrice: 39.99,
+                badge: 'BESTSELLER',
+                rating: 4.9,
+                image: 'https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=500&auto=format&fit=crop&q=80',
+                desc: 'Build, explore, and survive in infinite voxel worlds! Includes Java & Bedrock cross-platform editions with launcher access.'
+            },
+            {
+                id: 'g-cod-mw3',
+                title: 'Call of Duty: Modern Warfare III',
+                category: 'games',
+                subcategory: 'fps',
+                price: 69.99,
+                originalPrice: 79.99,
+                badge: 'HOT',
+                rating: 4.8,
+                image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop&q=80',
+                desc: 'Experience intense multi-player combat, open-world Zombies mode, and direct campaign continuation featuring Captain Price.'
+            },
+            {
+                id: 'g-cyberpunk',
+                title: 'Cyberpunk 2077: Phantom Liberty Bundle',
+                category: 'games',
+                subcategory: 'rpg',
+                price: 59.99,
+                originalPrice: 79.99,
+                badge: 'SPECIAL DEAL',
+                rating: 4.9,
+                image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500&auto=format&fit=crop&q=80',
+                desc: 'Dive into Night City as V with ray tracing overdrives and the spy-thriller expansion featuring Idris Elba.'
+            },
+            {
+                id: 'g-eldenring',
+                title: 'Elden Ring: Shadow of the Erdtree',
+                category: 'games',
+                subcategory: 'rpg',
+                price: 39.99,
+                originalPrice: 49.99,
+                badge: 'POPULAR',
+                rating: 5.0,
+                image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500&auto=format&fit=crop&q=80',
+                desc: 'The Game of the Year epic continues in the Land of Shadow. New weapons, spells, and brutal boss encounters.'
+            },
+            {
+                id: 'gear-ps5pro',
+                title: 'PlayStation 5 Console (Digital Edition)',
+                category: 'gear',
+                subcategory: 'consoles-pcs',
+                price: 449.99,
+                originalPrice: 499.99,
+                badge: 'HARDWARE',
+                rating: 4.9,
+                image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&auto=format&fit=crop&q=80',
+                desc: 'Experience lightning-fast loading with an ultra-high speed SSD, haptic feedback, and 4K HDR gaming performance.'
+            },
+            {
+                id: 'gear-mouse-logi',
+                title: 'Logitech G Pro X Superlight 2 Mouse',
+                category: 'gear',
+                subcategory: 'peripherals',
+                price: 159.99,
+                originalPrice: 179.99,
+                badge: 'ESPORTS PRO',
+                rating: 4.8,
+                image: 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&auto=format&fit=crop&q=80',
+                desc: 'Sub-60g wireless mouse with HERO 2 sensor, 32k DPI, hybrid optical switches, and 95 hours battery life.'
+            }
+        ];
+
+        const GENZ_VIDEOS = [
+            {
+                id: 'v1',
+                author: 'ViperSniper',
+                avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80',
+                title: 'INSANE 1v4 Sniping Clutch in MW3 Search & Destroy!! 🎯🔥',
+                game: 'Call of Duty',
+                likes: 1242,
+                commentsCount: 89,
+                isLiked: false,
+                thumbnail: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80',
+                desc: 'I had 10 seconds on the bomb and no ammo in my primary... watch how this went down!'
+            },
+            {
+                id: 'v2',
+                author: 'PixelQueen',
+                avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
+                title: 'Spent 100 hours building a Cyberpunk mega-castle in Minecraft! 🏰',
+                game: 'Minecraft',
+                likes: 3410,
+                commentsCount: 215,
+                isLiked: true,
+                thumbnail: 'https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=600&auto=format&fit=crop&q=80',
+                desc: 'Full tour with custom shaders and redstone automated doors!'
+            },
+            {
+                id: 'v3',
+                author: 'NeoRider',
+                avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100&auto=format&fit=crop&q=80',
+                title: '240Hz OLED vs 144Hz IPS Monitor Speed Test - Is it worth it?',
+                game: 'Hardware Gear',
+                likes: 980,
+                commentsCount: 42,
+                isLiked: false,
+                thumbnail: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&auto=format&fit=crop&q=80',
+                desc: 'Testing input latency with LG UltraGear OLED display on Nexus RTX rig.'
+            }
+        ];
+
+        const COMMUNITY_CHANNELS = {
+            general: [
+                { user: 'CyberMaster', tag: 'LVL 50', text: 'Hey gamers! Anyone up for some Warzone or Minecraft tonight?', time: '10:42 AM', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80' },
+                { user: 'KratosFan', tag: 'PRO', text: 'Just redeemed my Nexus XP for a discount on Elden Ring! Super smooth checkout.', time: '10:45 AM', avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100&auto=format&fit=crop&q=80' }
+            ],
+            lfg: [
+                { user: 'GhostReaper99', tag: 'YOU', text: 'Need 2 players for COD MW3 Ranked Play! Gold / Platinum tier preferred.', time: '11:00 AM', avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=100&auto=format&fit=crop&q=80' }
+            ],
+            hardware: [
+                { user: 'TechTitan', tag: 'BUILDER', text: 'Is the RTX 4080 Super rig worth getting over 4070 Ti? Looking at the Nexus store.', time: '09:15 AM', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80' }
+            ],
+            reviews: [
+                { user: 'Valerie_G', tag: 'CRITIC', text: 'Elden Ring Shadow of Erdtree is 10/10 difficulty and atmosphere. Outstanding DLC.', time: 'Yesterday', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80' }
+            ]
+        };
+
+        let state = {
+            activePage: 'home',
+            marketCategory: 'all',
+            subCategory: 'all',
+            searchQuery: '',
+            sortBy: 'featured',
+            activeChannel: 'general',
+            cart: JSON.parse(localStorage.getItem('nexus_cart')) || [],
+            promoDiscount: 0,
+            useXpDiscount: false, // XP redemption toggle state
+            user: JSON.parse(localStorage.getItem('nexus_user')) || {
+                isLoggedIn: true,
+                gamertag: 'GhostReaper99',
+                email: 'gamer@nexuszone.io',
+                avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=150&auto=format&fit=crop&q=80',
+                points: 1450, // 1450 XP = $14.50
+                ownedKeys: [
+                    { title: 'Minecraft: Java & Bedrock', key: 'NEXUS-MCFT-9842-X771', date: '2026-02-10' },
+                    { title: 'Call of Duty: Modern Warfare III', key: 'CODMW3-BATT-3310-PL99', date: '2026-01-22' }
+                ],
+                orders: [
+                    { id: 'NX-88219', item: 'Logitech G Pro X Superlight 2', status: 'Delivered', date: '2026-02-01', total: '$159.99' }
+                ]
+            }
+        };
+
+        function navigateTo(pageId) {
+            state.activePage = pageId;
+
+            document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+
+            const target = document.getElementById(`page-${pageId}`);
+            if (target) {
+                target.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-crimson-glow', 'bg-surfaceLight', 'font-bold');
+            });
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if (activeNav) {
+                activeNav.classList.add('text-crimson-glow', 'bg-surfaceLight', 'font-bold');
+            }
+
+            if (pageId === 'gamezone') {
+                renderSubcategoryPills();
+                applyFiltersAndSort();
+            } else if (pageId === 'community') {
+                renderCommunityChat();
+            } else if (pageId === 'genz') {
+                renderGenzFeed();
+            } else if (pageId === 'profile') {
+                renderProfileDashboard();
+            }
+
+            updateUserNavState();
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function switchChatChannel(channelKey) {
+            state.activeChannel = channelKey;
+            
+            document.querySelectorAll('.channel-tab').forEach(btn => {
+                btn.className = 'channel-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-surfaceLight transition-all';
+            });
+            const activeBtn = document.getElementById(`channel-btn-${channelKey}`);
+            if (activeBtn) {
+                activeBtn.className = 'channel-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all bg-purpleGlow text-white shadow-purple-glow';
+            }
+
+            const channelTitles = {
+                general: '# general-lounge',
+                lfg: '# lfg-squad-up',
+                hardware: '# setup-showcase',
+                reviews: '# game-reviews'
+            };
+            document.getElementById('current-channel-title').innerText = channelTitles[channelKey] || '# general';
+
+            renderCommunityChat();
+        }
+
+        function renderCommunityChat() {
+            const container = document.getElementById('chat-messages-container');
+            const msgs = COMMUNITY_CHANNELS[state.activeChannel] || [];
+
+            container.innerHTML = msgs.map(m => `
+                <div class="flex items-start gap-3 p-3 rounded-2xl bg-surfaceLight/40 border border-white/5 hover:border-purpleGlow/30 transition-all">
+                    <img src="${m.avatar}" class="w-10 h-10 rounded-xl object-cover ring-2 ring-purpleGlow/50">
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-xs text-white">${m.user}</span>
+                            <span class="px-1.5 py-0.2 rounded bg-purpleGlow/30 text-purpleGlow-accent font-black text-[9px] uppercase">${m.tag}</span>
+                            <span class="text-[10px] text-slate-500">${m.time}</span>
+                        </div>
+                        <p class="text-xs text-slate-200 mt-1 leading-relaxed">${m.text}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function handleSendCommunityMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('community-message-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            if (!COMMUNITY_CHANNELS[state.activeChannel]) {
+                COMMUNITY_CHANNELS[state.activeChannel] = [];
+            }
+
+            COMMUNITY_CHANNELS[state.activeChannel].push({
+                user: state.user.gamertag,
+                tag: 'YOU',
+                text: text,
+                time: 'Just now',
+                avatar: state.user.avatar
+            });
+
+            input.value = '';
+            
+            // Earn XP reward
+            state.user.points += 25;
+            saveUser();
+            updateUserNavState();
+
+            renderCommunityChat();
+            showToast('Message sent! Earned +25 Nexus XP!', 'success');
+        }
+
+        function renderGenzFeed() {
+            const container = document.getElementById('genz-feed-container');
+            if (!container) return;
+
+            container.innerHTML = GENZ_VIDEOS.map(v => `
+                <div class="glass-panel rounded-3xl overflow-hidden border border-cyanGlow/30 hover:border-cyanGlow transition-all duration-300 flex flex-col group">
+                    <div class="relative h-80 bg-surface overflow-hidden cursor-pointer" onclick="toggleGenzLike('${v.id}')">
+                        <img src="${v.thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-black/30"></div>
+                        
+                        <!-- Play Overlay Button -->
+                        <div class="absolute inset-0 flex items-center justify-center opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all">
+                            <div class="w-16 h-16 rounded-full bg-cyanGlow/90 text-obsidian flex items-center justify-center text-2xl shadow-cyan-glow pl-1">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                        </div>
+
+                        <!-- Badge Top -->
+                        <div class="absolute top-3 left-3 flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-full bg-cyanGlow text-obsidian text-[10px] font-black uppercase">
+                                <i class="fa-solid fa-gamepad mr-1"></i>${v.game}
+                            </span>
+                        </div>
+
+                        <!-- Creator Info Bottom -->
+                        <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+                            <div class="flex items-center gap-2">
+                                <img src="${v.avatar}" class="w-8 h-8 rounded-full object-cover ring-2 ring-cyanGlow">
+                                <span class="text-xs font-bold">${v.author}</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); toggleGenzLike('${v.id}')" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-obsidian/80 border border-white/10 text-xs font-bold ${v.isLiked ? 'text-crimson-glow' : 'text-slate-300'}">
+                                <i class="fa-solid fa-heart"></i> ${v.likes}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-5 flex flex-col flex-grow justify-between space-y-3">
+                        <div>
+                            <h3 class="font-bold text-white text-sm line-clamp-2 hover:text-cyanGlow-accent transition-colors">${v.title}</h3>
+                            <p class="text-xs text-slate-400 mt-1 line-clamp-2">${v.desc}</p>
+                        </div>
+
+                        <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-comment text-purpleGlow-accent"></i> ${v.commentsCount} Comments</span>
+                            <button onclick="showToast('Video clip link copied to clipboard!', 'success')" class="hover:text-cyanGlow-accent transition-colors">
+                                <i class="fa-solid fa-share-nodes mr-1"></i> Share Clip
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleGenzLike(videoId) {
+            const video = GENZ_VIDEOS.find(v => v.id === videoId);
+            if (!video) return;
+
+            video.isLiked = !video.isLiked;
+            video.likes += video.isLiked ? 1 : -1;
+            renderGenzFeed();
+            showToast(video.isLiked ? 'Liked video clip! ❤️' : 'Unliked video clip', 'info');
+        }
+
+        function openPostVideoModal() {
+            document.getElementById('genz-post-modal-overlay').classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closePostVideoModal() {
+            document.getElementById('genz-post-modal-overlay').classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function handleUploadGenzClip(e) {
+            e.preventDefault();
+            const title = document.getElementById('post-title').value;
+            const game = document.getElementById('post-game').value;
+            const image = document.getElementById('post-image').value;
+            const desc = document.getElementById('post-desc').value;
+
+            GENZ_VIDEOS.unshift({
+                id: 'v-' + Date.now(),
+                author: state.user.gamertag,
+                avatar: state.user.avatar,
+                title: title,
+                game: game,
+                likes: 1,
+                commentsCount: 0,
+                isLiked: true,
+                thumbnail: image,
+                desc: desc
+            });
+
+            // Reward +50 XP
+            state.user.points += 50;
+            saveUser();
+            updateUserNavState();
+
+            closePostVideoModal();
+            renderGenzFeed();
+            showToast('Published gaming video clip! Earned +50 Nexus XP!', 'success');
+        }
+
+        function setMarketplaceCategory(category) {
+            state.marketCategory = category;
+            state.subCategory = 'all';
+
+            document.querySelectorAll('.cat-tab-btn').forEach(b => {
+                b.className = 'cat-tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-400 hover:text-white';
+            });
+            const activeTab = document.getElementById(`tab-cat-${category}`);
+            if (activeTab) {
+                activeTab.className = 'cat-tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-gradient-to-r from-crimson to-purpleGlow text-white shadow-crimson-glow';
+            }
+
+            renderSubcategoryPills();
+            applyFiltersAndSort();
+        }
+
+        function renderSubcategoryPills() {
+            const container = document.getElementById('subcategory-pills');
+            let pills = [{ id: 'all', label: 'All Subcategories' }];
+
+            if (state.marketCategory === 'games') {
+                pills = pills.concat([
+                    { id: 'sandbox', label: 'Sandbox' },
+                    { id: 'fps', label: 'FPS Shooter' },
+                    { id: 'rpg', label: 'RPG / Action' }
+                ]);
+            } else if (state.marketCategory === 'gear') {
+                pills = pills.concat([
+                    { id: 'consoles-pcs', label: 'Consoles & PCs' },
+                    { id: 'peripherals', label: 'Mice & Gamepads' }
+                ]);
+            }
+
+            container.innerHTML = pills.map(p => `
+                <button onclick="setSubcategory('${p.id}')" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${state.subCategory === p.id ? 'bg-purpleGlow text-white shadow-purple-glow' : 'bg-surfaceLight/80 hover:bg-surfaceLight text-slate-300 border border-white/5'}">
+                    ${p.label}
+                </button>
+            `).join('');
+        }
+
+        function setSubcategory(sub) {
+            state.subCategory = sub;
+            renderSubcategoryPills();
+            applyFiltersAndSort();
+        }
+
+        function filterGamezone(category, sub = 'all') {
+            navigateTo('gamezone');
+            setMarketplaceCategory(category);
+            if (sub !== 'all') setSubcategory(sub);
+        }
+
+        function handleSearchInput() {
+            state.searchQuery = document.getElementById('store-search-input').value.toLowerCase().trim();
+            applyFiltersAndSort();
+        }
+
+        function resetFilters() {
+            state.searchQuery = '';
+            document.getElementById('store-search-input').value = '';
+            setMarketplaceCategory('all');
+        }
+
+        function applyFiltersAndSort() {
+            state.sortBy = document.getElementById('sort-select').value;
+            let list = [...PRODUCTS];
+
+            if (state.marketCategory === 'games') list = list.filter(p => p.category === 'games');
+            else if (state.marketCategory === 'gear') list = list.filter(p => p.category === 'gear');
+
+            if (state.subCategory !== 'all') list = list.filter(p => p.subcategory === state.subCategory);
+
+            if (state.searchQuery) {
+                list = list.filter(p => 
+                    p.title.toLowerCase().includes(state.searchQuery) || 
+                    p.desc.toLowerCase().includes(state.searchQuery)
+                );
+            }
+
+            if (state.sortBy === 'price-low') list.sort((a,b) => a.price - b.price);
+            else if (state.sortBy === 'price-high') list.sort((a,b) => b.price - a.price);
+            else if (state.sortBy === 'rating') list.sort((a,b) => b.rating - a.rating);
+
+            renderProductGrid(list, 'marketplace-grid');
+            document.getElementById('items-count-label').innerText = list.length;
+        }
+
+        function renderProductGrid(items, targetContainerId) {
+            const container = document.getElementById(targetContainerId);
+            if (!container) return;
+
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-16 text-center space-y-3 glass-panel rounded-3xl border border-white/10">
+                        <i class="fa-solid fa-ghost text-4xl text-slate-500"></i>
+                        <h4 class="font-bold text-white text-lg">No gaming items match your search</h4>
+                        <button onclick="resetFilters()" class="px-4 py-2 bg-crimson rounded-xl text-xs font-bold text-white">Reset Filters</button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = items.map(p => `
+                <div class="glass-panel rounded-2xl overflow-hidden card-hover-effect flex flex-col border border-white/10 group">
+                    <div class="relative h-48 overflow-hidden bg-surface">
+                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 left-3 flex flex-col gap-1">
+                            <span class="px-2.5 py-1 rounded-lg ${p.category === 'games' ? 'bg-crimson/90' : 'bg-purpleGlow/90'} text-white text-[10px] font-black uppercase">
+                                ${p.category}
+                            </span>
+                        </div>
+                        <div class="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-obsidian/90 text-amber-400 text-xs font-bold">
+                            <i class="fa-solid fa-star text-[10px]"></i> ${p.rating}
+                        </div>
+                    </div>
+
+                    <div class="p-5 flex flex-col flex-grow justify-between space-y-4">
+                        <div>
+                            <h3 class="font-bold text-white text-base line-clamp-1 group-hover:text-crimson-glow transition-colors">${p.title}</h3>
+                            <p class="text-xs text-slate-400 line-clamp-2 mt-1 leading-relaxed">${p.desc}</p>
+                        </div>
+
+                        <div class="pt-2 border-t border-white/10 flex items-center justify-between">
+                            <div>
+                                <span class="font-display font-black text-lg text-white">$${p.price.toFixed(2)}</span>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <button onclick="openProductModal('${p.id}')" class="p-2.5 rounded-xl bg-surfaceLight border border-white/10 text-slate-300 hover:text-white" title="Quick View">
+                                    <i class="fa-solid fa-eye text-xs"></i>
+                                </button>
+                                <button onclick="addToCart('${p.id}')" class="px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-crimson to-purpleGlow text-white font-bold text-xs shadow-crimson-glow flex items-center gap-1">
+                                    <i class="fa-solid fa-cart-plus"></i> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(productId) {
+            const item = PRODUCTS.find(p => p.id === productId);
+            if (!item) return;
+
+            const existing = state.cart.find(c => c.id === productId);
+            if (existing) existing.qty += 1;
+            else state.cart.push({ ...item, qty: 1 });
+
+            saveCart();
+            renderCartUI();
+            showToast(`Added "${item.title}" to cart!`, 'success');
+        }
+
+        function updateCartQty(productId, delta) {
+            const item = state.cart.find(c => c.id === productId);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) state.cart = state.cart.filter(c => c.id !== productId);
+
+            saveCart();
+            renderCartUI();
+        }
+
+        function removeFromCart(productId) {
+            state.cart = state.cart.filter(c => c.id !== productId);
+            saveCart();
+            renderCartUI();
+            showToast('Item removed from cart', 'info');
+        }
+
+        function saveCart() {
+            localStorage.setItem('nexus_cart', JSON.stringify(state.cart));
+        }
+
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-drawer-overlay');
+            const isOpen = !drawer.classList.contains('translate-x-full');
+
+            if (isOpen) {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                renderCartUI();
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        function toggleXpDiscount() {
+            if (state.user.points < 500) {
+                showToast('You need at least 500 Nexus XP to redeem a $5 discount!', 'error');
+                return;
+            }
+
+            state.useXpDiscount = !state.useXpDiscount;
+            renderCartUI();
+            showToast(state.useXpDiscount ? 'Applied 500 Nexus XP (-$5.00 OFF)' : 'Removed XP discount', 'info');
+        }
+
+        function renderCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const badge = document.getElementById('cart-badge');
+
+            const totalQty = state.cart.reduce((sum, item) => sum + item.qty, 0);
+            badge.innerText = totalQty;
+            if (totalQty > 0) badge.classList.remove('scale-0');
+            else badge.classList.add('scale-0');
+
+            if (state.cart.length === 0) {
+                container.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center space-y-4 py-12">
+                        <i class="fa-solid fa-cart-arrow-down text-5xl text-slate-600"></i>
+                        <p class="text-slate-400 text-sm font-medium">Your shopping cart is empty.</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = state.cart.map(item => `
+                    <div class="flex items-center gap-4 p-3 rounded-2xl bg-surfaceLight/50 border border-white/10">
+                        <img src="${item.image}" class="w-16 h-16 rounded-xl object-cover">
+                        <div class="flex-grow min-w-0">
+                            <h4 class="font-bold text-xs text-white truncate">${item.title}</h4>
+                            <p class="text-xs text-slate-400 font-semibold">$${item.price.toFixed(2)}</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="updateCartQty('${item.id}', -1)" class="w-6 h-6 rounded-lg bg-surface flex items-center justify-center text-xs text-slate-300">-</button>
+                                <span class="text-xs font-bold text-white px-1">${item.qty}</span>
+                                <button onclick="updateCartQty('${item.id}', 1)" class="w-6 h-6 rounded-lg bg-surface flex items-center justify-center text-xs text-slate-300">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart('${item.id}')" class="p-2 text-slate-500 hover:text-crimson">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            // Calculations
+            const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const promoAmt = subtotal * state.promoDiscount;
+            const xpDiscountAmt = state.useXpDiscount ? 5.00 : 0.00;
+            const total = Math.max(0, subtotal - promoAmt - xpDiscountAmt);
+
+            document.getElementById('cart-subtotal').innerText = `$${subtotal.toFixed(2)}`;
+            document.getElementById('cart-discount').innerText = `-$${promoAmt.toFixed(2)}`;
+            document.getElementById('cart-xp-discount').innerText = `-$${xpDiscountAmt.toFixed(2)}`;
+            document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('checkout-pay-amount').innerText = `$${total.toFixed(2)}`;
+
+            document.getElementById('cart-xp-user-balance').innerText = `${state.user.points} XP`;
+            const xpBtn = document.getElementById('xp-discount-btn');
+            if (state.useXpDiscount) {
+                xpBtn.innerText = 'Applied (-$5.00)';
+                xpBtn.className = 'px-3 py-1 rounded-xl bg-emerald-400 text-obsidian font-black text-xs';
+            } else {
+                xpBtn.innerText = 'Redeem 500 XP (-$5.00)';
+                xpBtn.className = 'px-3 py-1 rounded-xl bg-amber-500 text-obsidian font-black text-xs hover:bg-amber-400';
+            }
+        }
+
+        function applyPromoCode() {
+            const code = document.getElementById('promo-code-input').value.toUpperCase().trim();
+            if (code === 'GAMER10') {
+                state.promoDiscount = 0.10;
+                showToast('Promo code GAMER10 applied! 10% OFF', 'success');
+            } else {
+                showToast('Invalid promo code. Try GAMER10', 'error');
+            }
+            renderCartUI();
+        }
+
+        function openProductModal(productId) {
+            const p = PRODUCTS.find(item => item.id === productId);
+            if (!p) return;
+
+            const modalOverlay = document.getElementById('product-modal-overlay');
+            const modalBody = document.getElementById('product-modal-body');
+
+            modalBody.innerHTML = `
+                <div class="rounded-2xl overflow-hidden bg-surface relative">
+                    <img src="${p.image}" class="w-full h-64 md:h-full object-cover">
+                </div>
+                <div class="space-y-4 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 text-amber-400 text-xs font-bold mb-1">
+                            <i class="fa-solid fa-star"></i> ${p.rating} Rating
+                        </div>
+                        <h3 class="font-display font-black text-2xl text-white">${p.title}</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mt-3">${p.desc}</p>
+                    </div>
+
+                    <div class="space-y-3 pt-4 border-t border-white/10">
+                        <div class="flex items-baseline gap-3">
+                            <span class="font-display font-black text-3xl text-crimson-glow">$${p.price.toFixed(2)}</span>
+                        </div>
+
+                        <button onclick="addToCart('${p.id}'); closeProductModal();" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-crimson to-purpleGlow text-white font-bold text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-cart-plus"></i> Add To Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            modalOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            document.getElementById('product-modal-content').classList.remove('scale-95');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal-overlay').classList.add('opacity-0', 'pointer-events-none');
+            document.getElementById('product-modal-content').classList.add('scale-95');
+        }
+
+        function openCheckoutModal() {
+            if (state.cart.length === 0) {
+                showToast('Your cart is empty!', 'error');
+                return;
+            }
+            toggleCartDrawer();
+            document.getElementById('checkout-modal-overlay').classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal-overlay').classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function handleCheckoutSubmit(e) {
+            e.preventDefault();
+
+            if (state.useXpDiscount) {
+                state.user.points = Math.max(0, state.user.points - 500);
+            }
+
+            state.cart.forEach(item => {
+                if (item.category === 'games') {
+                    const mockKey = `NEXUS-${Math.random().toString(36).substring(2, 6).toUpperCase()}-2026`;
+                    state.user.ownedKeys.unshift({
+                        title: item.title,
+                        key: mockKey,
+                        date: new Date().toISOString().split('T')[0]
+                    });
+                } else {
+                    const mockOrder = `NX-${Math.floor(10000 + Math.random() * 90000)}`;
+                    state.user.orders.unshift({
+                        id: mockOrder,
+                        item: item.title,
+                        status: 'Processing Shipment',
+                        date: new Date().toISOString().split('T')[0],
+                        total: `$${item.price.toFixed(2)}`
+                    });
+                }
+            });
+
+            // Earn purchase XP
+            state.user.points += 200;
+
+            state.cart = [];
+            state.useXpDiscount = false;
+            saveCart();
+            saveUser();
+
+            closeCheckoutModal();
+            showToast('Order complete! Keys & XP updated in Profile.', 'success');
+            navigateTo('profile');
+        }
+
+        function updateUserNavState() {
+            const authContainer = document.getElementById('auth-nav-container');
+            const userBadge = document.getElementById('user-nav-badge');
+
+            if (state.user && state.user.isLoggedIn) {
+                authContainer.classList.add('hidden');
+                userBadge.classList.remove('hidden');
+                userBadge.classList.add('flex');
+                document.getElementById('nav-user-tag').innerText = state.user.gamertag;
+                document.getElementById('nav-user-xp').innerText = `${state.user.points} XP`;
+                document.getElementById('nav-user-avatar').src = state.user.avatar;
+            } else {
+                authContainer.classList.remove('hidden');
+                userBadge.classList.add('hidden');
+                userBadge.classList.remove('flex');
+            }
+        }
+
+        function renderProfileDashboard() {
+            const loggedInView = document.getElementById('profile-logged-in');
+            const loggedOutView = document.getElementById('profile-logged-out');
+
+            if (!state.user || !state.user.isLoggedIn) {
+                loggedInView.classList.add('hidden');
+                loggedOutView.classList.remove('hidden');
+                return;
+            }
+
+            loggedInView.classList.remove('hidden');
+            loggedOutView.classList.add('hidden');
+
+            document.getElementById('dash-gamertag').innerText = state.user.gamertag;
+            document.getElementById('dash-email').innerText = state.user.email;
+            document.getElementById('dash-avatar').src = state.user.avatar;
+            document.getElementById('dash-points').innerText = `${state.user.points} XP`;
+            document.getElementById('dash-points-value').innerText = `Worth $${(state.user.points / 100).toFixed(2)} in Discounts`;
+            document.getElementById('dash-owned-count').innerText = state.user.ownedKeys.length;
+
+            document.getElementById('edit-gamertag').value = state.user.gamertag;
+            document.getElementById('edit-email').value = state.user.email;
+
+            const keysContainer = document.getElementById('digital-keys-list');
+            keysContainer.innerHTML = state.user.ownedKeys.map(k => `
+                <div class="flex items-center justify-between p-3 rounded-xl bg-surfaceLight/50 border border-white/10">
+                    <div>
+                        <h4 class="font-bold text-xs text-white">${k.title}</h4>
+                        <span class="text-[10px] text-slate-400">Activated: ${k.date}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-mono text-xs font-bold text-crimson-glow bg-obsidian px-2.5 py-1 rounded border border-crimson/30">${k.key}</span>
+                        <button onclick="copyToClipboard('${k.key}')" class="p-1.5 rounded-lg bg-surface text-slate-300 text-xs"><i class="fa-solid fa-copy"></i></button>
+                    </div>
+                </div>
+            `).join('');
+
+            const ordersContainer = document.getElementById('order-history-list');
+            ordersContainer.innerHTML = state.user.orders.map(o => `
+                <div class="flex items-center justify-between p-3 rounded-xl bg-surfaceLight/50 border border-white/10 text-xs">
+                    <div>
+                        <span class="font-mono text-[10px] text-purpleGlow-accent font-bold">${o.id}</span>
+                        <h4 class="font-bold text-white mt-0.5">${o.item}</h4>
+                    </div>
+                    <div class="text-right">
+                        <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">${o.status}</span>
+                        <p class="text-slate-400 text-[10px] mt-1">${o.total}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function handleSignInSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('signin-email').value;
+
+            state.user.isLoggedIn = true;
+            state.user.email = email;
+            state.user.gamertag = email.split('@')[0];
+
+            saveUser();
+            updateUserNavState();
+            showToast('Welcome back to NEXUS Zone!', 'success');
+            navigateTo('profile');
+        }
+
+        function handleSignUpSubmit(e) {
+            e.preventDefault();
+            const tag = document.getElementById('signup-tag').value;
+            const email = document.getElementById('signup-email').value;
+
+            state.user = {
+                isLoggedIn: true,
+                gamertag: tag,
+                email: email,
+                avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=150&auto=format&fit=crop&q=80',
+                points: 200,
+                ownedKeys: [
+                    { title: 'Minecraft: Java & Bedrock', key: 'NEXUS-WELCOME-GIFT-2026', date: new Date().toISOString().split('T')[0] }
+                ],
+                orders: []
+            };
+
+            saveUser();
+            updateUserNavState();
+            showToast('Account created! Free 200 XP welcome reward claimed.', 'success');
+            navigateTo('profile');
+        }
+
+        function handleUpdateProfile(e) {
+            e.preventDefault();
+            state.user.gamertag = document.getElementById('edit-gamertag').value;
+            state.user.email = document.getElementById('edit-email').value;
+
+            saveUser();
+            updateUserNavState();
+            renderProfileDashboard();
+            showToast('Profile settings saved', 'success');
+        }
+
+        function handleSignOut() {
+            state.user.isLoggedIn = false;
+            saveUser();
+            updateUserNavState();
+            showToast('Signed out', 'info');
+            navigateTo('home');
+        }
+
+        function saveUser() {
+            localStorage.setItem('nexus_user', JSON.stringify(state.user));
+        }
+
+        function copyToClipboard(text) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('Key copied to clipboard!', 'success');
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            const colorClass = type === 'success' ? 'border-emerald-500 text-emerald-300' :
+                               type === 'error' ? 'border-crimson text-crimson-glow' : 'border-purpleGlow text-purpleGlow-accent';
+
+            toast.className = `glass-panel border-l-4 ${colorClass} px-4 py-3 rounded-xl shadow-2xl text-xs font-semibold text-white flex items-center gap-3 transition-all transform translate-x-10 opacity-0 pointer-events-auto`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-info text-sm"></i> <span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('translate-x-10', 'opacity-0'), 50);
+            setTimeout(() => {
+                toast.classList.add('translate-x-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        window.onload = function() {
+            renderProductGrid([PRODUCTS[0], PRODUCTS[1], PRODUCTS[4], PRODUCTS[5]], 'home-featured-grid');
+            renderSubcategoryPills();
+            applyFiltersAndSort();
+            renderCartUI();
+            updateUserNavState();
+            renderProfileDashboard();
+        };
+    </script>
+</body>
+</html>
